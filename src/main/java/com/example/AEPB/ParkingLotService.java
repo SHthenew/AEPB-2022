@@ -27,4 +27,8 @@ public class ParkingLotService {
 
         return ticket;
     }
+
+    public Car pickUpCar(Ticket ticket) {
+        return new Car("");
+    }
 }

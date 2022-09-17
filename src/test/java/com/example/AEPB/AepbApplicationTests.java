@@ -2,37 +2,36 @@ package com.example.AEPB;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class HelloTest {
 
-	private ParkingLotService parkingLot;
-	static private final Integer parkingSize = 100;
+    static private final Integer parkingSize = 100;
+    private ParkingLotService parkingLot;
 
-	@BeforeEach
-	void setUp() {
-		parkingLot = new ParkingLotService(parkingSize);
-	}
+    @BeforeEach
+    void setUp() {
+        parkingLot = new ParkingLotService(parkingSize);
+    }
 
 
-	@Test
-	void should_no_null() {
+    @Test
+    void should_no_null() {
 
-		Hello hello = new Hello();
-		assertNotNull(hello);
-	}
+        Hello hello = new Hello();
+        assertNotNull(hello);
+    }
 
-	@Test
-	void should_get_tickt_when_parking_a_normal_car() {
-		// given
-		Car normalCar = Car.builder().build();
+    @Test
+    void should_get_tickt_when_parking_a_normal_car() {
+        // given
+        Car normalCar = Car.builder().plateNo("12345").build();
 
-		// when
-		Ticket ticket = parkingLot.parkingCar(normalCar);
+        // when
+        Ticket ticket = parkingLot.parkingCar(normalCar);
 
-		// then
-		assertNotNull(ticket);
-	}
+        // then
+        assertNotNull(ticket);
+    }
 }

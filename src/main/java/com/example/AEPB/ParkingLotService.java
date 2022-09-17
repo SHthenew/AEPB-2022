@@ -15,7 +15,7 @@ public class ParkingLotService {
                 .collect(Collectors.toList());
     }
 
-    public Ticket parkingCar(Car Car) {
+    public Ticket parkingCar(Car car) {
         ParkingSpace parkingSpace = parkingSpaces.stream()
                 .filter(ParkingSpace::canParking)
                 .findFirst()
@@ -23,8 +23,7 @@ public class ParkingLotService {
 
         Ticket ticket = new Ticket();
 
-        parkingSpace.setCar(Car);
-        parkingSpace.setTicket(ticket);
+        parkingSpace.parkingCar(ticket, car);
 
         return ticket;
     }

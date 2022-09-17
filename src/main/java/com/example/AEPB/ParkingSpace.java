@@ -2,6 +2,7 @@ package com.example.AEPB;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 
 import java.util.Objects;
@@ -15,5 +16,10 @@ public class ParkingSpace {
 
     public boolean canParking() {
         return Objects.isNull(car);
+    }
+
+    public void parkingCar(@NonNull Ticket ticket, @NonNull Car car) {
+        this.ticket = ticket;
+        this.car = car;
     }
 }

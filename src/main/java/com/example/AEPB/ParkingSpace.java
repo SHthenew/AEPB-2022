@@ -22,4 +22,15 @@ public class ParkingSpace {
         this.ticket = ticket;
         this.car = car;
     }
+
+    public boolean haveCar() {
+        return Objects.nonNull(car) && Objects.nonNull(ticket);
+    }
+
+    public Car pickUpCar() {
+        Car pickedCar = car;
+        car = null;
+        ticket = null;
+        return pickedCar;
+    }
 }

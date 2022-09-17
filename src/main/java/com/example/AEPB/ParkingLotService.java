@@ -29,6 +29,10 @@ public class ParkingLotService {
     }
 
     public Car pickUpCar(Ticket ticket) {
-        return new Car("");
+        ParkingSpace parkingSpace = parkingSpaces.stream()
+                .filter(space -> space.haveCar() && space.getTicket().sameTicket(ticket))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("not find car."));
+        return parkingSpace.pickUpCar();
     }
 }

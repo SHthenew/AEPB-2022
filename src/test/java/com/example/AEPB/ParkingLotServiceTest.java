@@ -3,8 +3,9 @@ package com.example.AEPB;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class ParkingLotServiceTest {
 
@@ -40,5 +41,22 @@ class ParkingLotServiceTest {
         // then
         assertNotNull(returnedCar);
         assertEquals(normalCar.getPlateNo(), returnedCar.getPlateNo());
+    }
+
+    @Test
+    void  should_parking_failed_when_parking_given_parking_lot_full() {
+        // given
+        for (int i = 0; i < parkingSize; i++) {
+            Car distinctCar = Car.builder().plateNo(UUID.randomUUID().toString()).build();
+            parkingLot.parkingCar(distinctCar);
+        }
+        Car normalCar = Car.builder().plateNo(UUID.randomUUID().toString()).build();
+
+        // when
+        RuntimeException thrown = assertThrows(RuntimeException.class,
+                () -> parkingLot.parkingCar(normalCar));
+
+        // then
+        assertEquals("the parking lot is full", thrown.getMessage());
     }
 }

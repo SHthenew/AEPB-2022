@@ -2,6 +2,8 @@ package com.example.AEPB;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.UUID;
 
@@ -44,7 +46,7 @@ class ParkingLotServiceTest {
     }
 
     @Test
-    void  should_parking_failed_when_parking_given_parking_lot_full() {
+    void should_parking_failed_when_parking_given_parking_lot_full() {
         // given
         for (int i = 0; i < parkingSize; i++) {
             Car distinctCar = Car.builder().plateNo(UUID.randomUUID().toString()).build();
@@ -59,4 +61,30 @@ class ParkingLotServiceTest {
         // then
         assertEquals("the parking lot is full", thrown.getMessage());
     }
+
+    @Test
+    void should_parking_failed_when_parking_given_a_car_without_plate_number() {
+        // given
+        Car noPlateNumberCar = Car.builder().plateNo(null).build();
+
+        // when
+        NullPointerException thrown = assertThrows(NullPointerException.class, () -> parkingLot.parkingCar(noPlateNumberCar));
+
+        // then
+        assertEquals("the car plate number can not be null", thrown.getMessage());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"", " ", "   "})
+    void should_parking_failed_when_parking_given_a_car_with_empty_plate_number(String plateNo) {
+        // given
+        Car emptyPlateNumberCar = Car.builder().plateNo(plateNo).build();
+
+        // when
+        NullPointerException thrown = assertThrows(NullPointerException.class, () -> parkingLot.parkingCar(emptyPlateNumberCar));
+
+        // then
+        assertEquals("the car plate number can not be empty", thrown.getMessage());
+    }
+
 }

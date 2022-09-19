@@ -10,7 +10,7 @@ public class ParkingLotService {
     private final List<ParkingSpace> parkingSpaces;
 
     public ParkingLotService(Integer parkingSize) {
-        parkingSpaces = IntStream.rangeClosed(0, parkingSize)
+        parkingSpaces = IntStream.range(0, parkingSize)
                 .mapToObj(i -> new ParkingSpace())
                 .collect(Collectors.toList());
     }

@@ -19,7 +19,7 @@ public class ParkingLotService {
         ParkingSpace parkingSpace = parkingSpaces.stream()
                 .filter(ParkingSpace::canParking)
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("no more parking space"));
+                .orElseThrow(() -> new RuntimeException("the parking lot is full"));
 
         Ticket ticket = new Ticket();
 

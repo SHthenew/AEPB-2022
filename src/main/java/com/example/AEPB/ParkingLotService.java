@@ -18,7 +18,7 @@ public class ParkingLotService {
                 .collect(Collectors.toList());
     }
 
-    private static void validCar(Car car) {
+    private void validCar(Car car) {
         if (Objects.isNull(car)) {
             throw new RuntimeException("the car can not be null");
         }
@@ -30,20 +30,19 @@ public class ParkingLotService {
         if (Strings.isBlank(car.getPlateNo())) {
             throw new RuntimeException("the car plate number can not be empty");
         }
+        checkDuplicateCar(car);
     }
 
     public Ticket parkingCar(Car car) {
+
         validCar(car);
 
-        parkingSpaces.stream()
-                .filter(ParkingSpace::haveCar)
-                .map(space -> space.getCar().getPlateNo())
-                .filter(plateNo -> plateNo.equals(car.getPlateNo()))
-                .findAny()
-                .ifPresent(p -> {
-                    throw new RuntimeException("the car plate number is duplicate");
-                });
+        Ticket ticket = saveCarIntoParkingSpace(car);
 
+        return ticket;
+    }
+
+    private Ticket saveCarIntoParkingSpace(Car car) {
         ParkingSpace parkingSpace = parkingSpaces.stream()
                 .filter(ParkingSpace::canParking)
                 .findFirst()
@@ -52,8 +51,18 @@ public class ParkingLotService {
         Ticket ticket = new Ticket();
 
         parkingSpace.parkingCar(ticket, car);
-
         return ticket;
+    }
+
+    private void checkDuplicateCar(Car car) {
+        parkingSpaces.stream()
+                .filter(ParkingSpace::haveCar)
+                .map(space -> space.getCar().getPlateNo())
+                .filter(plateNo -> plateNo.equals(car.getPlateNo()))
+                .findAny()
+                .ifPresent(p -> {
+                    throw new RuntimeException("the car plate number is duplicate");
+                });
     }
 
     public Car pickUpCar(Ticket ticket) {

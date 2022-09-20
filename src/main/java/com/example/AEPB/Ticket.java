@@ -1,5 +1,6 @@
 package com.example.AEPB;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
@@ -7,6 +8,7 @@ import java.util.UUID;
 
 @Getter
 @Data
+@Builder
 public class Ticket {
     private final String ticketNo;
 

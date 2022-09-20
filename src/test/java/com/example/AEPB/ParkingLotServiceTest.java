@@ -87,4 +87,59 @@ class ParkingLotServiceTest {
         assertEquals("the car plate number can not be empty", thrown.getMessage());
     }
 
+    @Test
+    void should_parking_failed_when_parking_given_the_car_having_same_plate_number_in_plot() {
+        // given
+        Car firstCar = Car.builder().plateNo("京A88888").build();
+        parkingLot.parkingCar(firstCar);
+
+        // when
+        Car secondCar = Car.builder().plateNo("京A88888").build();
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> parkingLot.isDuplication(secondCar));
+
+        // then
+        assertEquals("the car plate number is duplicate", thrown.getMessage());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"", " ", "   "})
+    void should_get_car_failed_when_pick_up_given_a_ticket_with_empty_ticket_number(String emptyTicketNo) {
+        // given
+        Car normalCar = Car.builder().plateNo("京A88888").build();
+        Ticket ticket = parkingLot.parkingCar(normalCar);
+        Ticket emptyTicket = Ticket.builder().ticketNo(emptyTicketNo).build();
+
+        // when
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> parkingLot.pickUpCar(emptyTicket));
+
+        // then
+        assertEquals("the ticket number can not be empty", thrown.getMessage());
+    }
+
+    @Test
+    void should_get_car_failed_when_pick_up_given_no_ticket() {
+        // given
+        Car normalCar = Car.builder().plateNo("京A88888").build();
+        Ticket ticket = parkingLot.parkingCar(normalCar);
+
+        // when
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> parkingLot.pickUpCar(null));
+
+        // then
+        assertEquals("the ticket can not be null", thrown.getMessage());
+    }
+
+    @Test
+    void should_parking_failed_when_parking_given_null_parking_lot() {
+        // given
+        Integer noParkingSize = 0;
+        ParkingLotService noParkingLot = new ParkingLotService(noParkingSize);
+        Car normalCar = Car.builder().plateNo("京A88888").build();
+
+        // when
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> noParkingLot.parkingCar(normalCar));
+
+        // then
+        assertEquals("the parking lot can not be null", thrown.getMessage());
+    }
 }

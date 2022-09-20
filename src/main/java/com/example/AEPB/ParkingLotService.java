@@ -35,4 +35,8 @@ public class ParkingLotService {
                 .orElseThrow(() -> new RuntimeException("not find car."));
         return parkingSpace.pickUpCar();
     }
+
+    public void isDuplication(Car currentCar) {
+        throw new RuntimeException("the car plate number is duplicate");
+    }
 }

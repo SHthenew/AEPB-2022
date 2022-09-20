@@ -119,8 +119,8 @@ class ParkingLotServiceTest {
 
     @ParameterizedTest
     @NullSource
-    @ValueSource(strings = {"", " ", "   "})
-    void should_get_car_failed_when_pick_up_given_a_ticket_with_empty_ticket_number(String emptyTicketNo) {
+    @ValueSource(strings = {"", " ", "   ", "abc"})
+    void should_get_car_failed_when_pick_up_given_a_ticket_with_incorrect_ticket_number(String emptyTicketNo) {
         // given
         Car normalCar = Car.builder().plateNo("京A88888").build();
         Ticket ticket = parkingLot.parkingCar(normalCar);
@@ -130,7 +130,7 @@ class ParkingLotServiceTest {
         RuntimeException thrown = assertThrows(RuntimeException.class, () -> parkingLot.pickUpCar(emptyTicket));
 
         // then
-        assertEquals("the ticket number can not be empty", thrown.getMessage());
+        assertEquals("the ticket number can not be found", thrown.getMessage());
     }
 
     @Test

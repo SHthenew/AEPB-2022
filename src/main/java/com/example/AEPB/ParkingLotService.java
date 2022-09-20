@@ -64,7 +64,7 @@ public class ParkingLotService {
         ParkingSpace parkingSpace = parkingSpaces.stream()
                 .filter(space -> space.haveCar() && space.getTicket().sameTicket(ticket))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("the ticket number can not be empty"));
+                .orElseThrow(() -> new RuntimeException("the ticket number can not be found"));
         return parkingSpace.pickUpCar();
     }
 

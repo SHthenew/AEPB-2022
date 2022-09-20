@@ -18,7 +18,7 @@ public class ParkingLotService {
                 .collect(Collectors.toList());
     }
 
-    public Ticket parkingCar(Car car) {
+    private static void validCar(Car car) {
         if (Objects.isNull(car)) {
             throw new RuntimeException("the car can not be null");
         }
@@ -30,6 +30,10 @@ public class ParkingLotService {
         if (Strings.isBlank(car.getPlateNo())) {
             throw new RuntimeException("the car plate number can not be empty");
         }
+    }
+
+    public Ticket parkingCar(Car car) {
+        validCar(car);
 
         parkingSpaces.stream()
                 .filter(ParkingSpace::haveCar)

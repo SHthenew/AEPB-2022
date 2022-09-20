@@ -72,21 +72,20 @@ class ParkingLotServiceTest {
         Car noPlateNumberCar = Car.builder().plateNo(null).build();
 
         // when
-        NullPointerException thrown = assertThrows(NullPointerException.class, () -> parkingLot.parkingCar(noPlateNumberCar));
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> parkingLot.parkingCar(noPlateNumberCar));
 
         // then
         assertEquals("the car plate number can not be null", thrown.getMessage());
     }
 
     @ParameterizedTest
-    @NullSource
     @ValueSource(strings = {"", " ", "   "})
     void should_parking_failed_when_parking_given_a_car_with_empty_plate_number(String plateNo) {
         // given
         Car emptyPlateNumberCar = Car.builder().plateNo(plateNo).build();
 
         // when
-        NullPointerException thrown = assertThrows(NullPointerException.class, () -> parkingLot.parkingCar(emptyPlateNumberCar));
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> parkingLot.parkingCar(emptyPlateNumberCar));
 
         // then
         assertEquals("the car plate number can not be empty", thrown.getMessage());
@@ -98,7 +97,7 @@ class ParkingLotServiceTest {
         Car car = null;
 
         // when
-        NullPointerException thrown = assertThrows(NullPointerException.class, () -> parkingLot.parkingCar(car));
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> parkingLot.parkingCar(car));
 
         // then
         assertEquals("the car can not be null", thrown.getMessage());

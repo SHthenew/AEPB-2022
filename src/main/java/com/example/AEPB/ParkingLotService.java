@@ -1,6 +1,8 @@
 package com.example.AEPB;
 
 
+import org.apache.logging.log4j.util.Strings;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -17,8 +19,15 @@ public class ParkingLotService {
     }
 
     public Ticket parkingCar(Car car) {
+        if (Objects.isNull(car)) {
+            throw new RuntimeException("the car can not be null");
+        }
 
-        if (isInvalidCar(car)) {
+        if (Objects.isNull(car.getPlateNo())) {
+            throw new RuntimeException("the car plate number can not be null");
+        }
+
+        if (Strings.isBlank(car.getPlateNo())) {
             throw new RuntimeException("the car plate number can not be empty");
         }
 

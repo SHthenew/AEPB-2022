@@ -3,11 +3,15 @@ package com.example.AEPB;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ParkingLotServiceTest {
 
@@ -75,6 +79,7 @@ class ParkingLotServiceTest {
     }
 
     @ParameterizedTest
+    @NullSource
     @ValueSource(strings = {"", " ", "   "})
     void should_parking_failed_when_parking_given_a_car_with_empty_plate_number(String plateNo) {
         // given
@@ -88,6 +93,18 @@ class ParkingLotServiceTest {
     }
 
     @Test
+    void should_parking_failed_when_parking_given_null_car() {
+        // given
+        Car car = null;
+
+        // when
+        NullPointerException thrown = assertThrows(NullPointerException.class, () -> parkingLot.parkingCar(car));
+
+        // then
+        assertEquals("the car can not be null", thrown.getMessage());
+    }
+
+    @Test
     void should_parking_failed_when_parking_given_the_car_having_same_plate_number_in_plot() {
         // given
         Car firstCar = Car.builder().plateNo("京A88888").build();
@@ -95,13 +112,14 @@ class ParkingLotServiceTest {
 
         // when
         Car secondCar = Car.builder().plateNo("京A88888").build();
-        RuntimeException thrown = assertThrows(RuntimeException.class, () -> parkingLot.isDuplication(secondCar));
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> parkingLot.parkingCar(secondCar));
 
         // then
         assertEquals("the car plate number is duplicate", thrown.getMessage());
     }
 
     @ParameterizedTest
+    @NullSource
     @ValueSource(strings = {"", " ", "   "})
     void should_get_car_failed_when_pick_up_given_a_ticket_with_empty_ticket_number(String emptyTicketNo) {
         // given
@@ -132,14 +150,13 @@ class ParkingLotServiceTest {
     @Test
     void should_parking_failed_when_parking_given_null_parking_lot() {
         // given
-        Integer noParkingSize = 0;
-        ParkingLotService noParkingLot = new ParkingLotService(noParkingSize);
+        parkingLot = null;
         Car normalCar = Car.builder().plateNo("京A88888").build();
 
         // when
-        RuntimeException thrown = assertThrows(RuntimeException.class, () -> noParkingLot.parkingCar(normalCar));
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> parkingLot.parkingCar(normalCar));
 
         // then
-        assertEquals("the parking lot can not be null", thrown.getMessage());
+        assertNull(thrown.getMessage());
     }
 }

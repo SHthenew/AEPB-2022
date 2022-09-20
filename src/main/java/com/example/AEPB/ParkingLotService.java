@@ -31,6 +31,14 @@ public class ParkingLotService {
             throw new RuntimeException("the car plate number can not be empty");
         }
 
+        parkingSpaces.stream()
+                .filter(ParkingSpace::haveCar)
+                .map(space -> space.getCar().getPlateNo())
+                .filter(plateNo -> plateNo.equals(car.getPlateNo()))
+                .findAny()
+                .ifPresent(p -> {
+                    throw new RuntimeException("the car plate number is duplicate");
+                });
 
         ParkingSpace parkingSpace = parkingSpaces.stream()
                 .filter(ParkingSpace::canParking)
@@ -54,10 +62,6 @@ public class ParkingLotService {
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("the ticket number can not be empty"));
         return parkingSpace.pickUpCar();
-    }
-
-    public void isDuplication(Car currentCar) {
-        throw new RuntimeException("the car plate number is duplicate");
     }
 
     private boolean isInvalidTicket(Ticket ticket) {

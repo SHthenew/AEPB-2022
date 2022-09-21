@@ -12,14 +12,15 @@ public class ParkingLot {
 
 
     private final Map<Ticket, Car> parkingSpace = new HashMap<>();
-    private final int capacity;
+    @Getter
+    private final int maxCapacity;
     @Getter
     private int order;
     @Getter
     private String name;
 
-    public ParkingLot(int capacity, int order, String name) {
-        this.capacity = capacity;
+    public ParkingLot(int maxCapacity, int order, String name) {
+        this.maxCapacity = maxCapacity;
         this.order = order;
         this.name = name;
     }
@@ -54,7 +55,7 @@ public class ParkingLot {
     }
 
     public boolean haveCapacity() {
-        return parkingSpace.size() < capacity;
+        return parkingSpace.size() < maxCapacity;
 
     }
 

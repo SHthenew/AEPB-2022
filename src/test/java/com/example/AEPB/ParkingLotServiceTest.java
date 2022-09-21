@@ -16,11 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class ParkingLotServiceTest {
 
     static private final Integer parkingSize = 100;
-    private ParkingLotService parkingLot;
+    private ParkingLot parkingLot;
 
     @BeforeEach
     void setUp() {
-        parkingLot = new ParkingLotService(parkingSize);
+        parkingLot = new ParkingLot(parkingSize);
     }
 
     @Test

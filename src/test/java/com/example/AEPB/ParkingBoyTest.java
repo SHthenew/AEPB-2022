@@ -89,6 +89,22 @@ public class ParkingBoyTest {
         assertEquals("have duplicated car in parking lot", thrown.getMessage());
     }
 
+    @Test
+    void should_park_into_1st_lot_when_parking_car_given_1st_lot_full_and_pick_up_car_from_1st_lot_and_2nd_3th_lot_not_full() {
+        // given
+        fillLot(parkingLots.get(0), parkingLots.get(0).getMaxCapacity() - 1);
+        Ticket ticket = parkingLots.get(0).parkingCar(Car.builder().plateNo(UUID.randomUUID().toString()).build());
+        fillLot(parkingLots.get(1), parkingLots.get(1).getMaxCapacity() - 1);
+
+        parkingBoy.pickUp(ticket);
+
+        // when
+        Ticket ticket2 = parkingBoy.parkingCar(Car.builder().plateNo(UUID.randomUUID().toString()).build());
+
+        // then
+        assertEquals(parkingLots.get(0).getName(), ticket2.getParkingLotName());
+    }
+
     private void fillLot(ParkingLot parkingLot, int size) {
         IntStream.range(0, size)
                 .forEach(i -> parkingLot.parkingCar(Car.builder().plateNo(UUID.randomUUID().toString()).build()));

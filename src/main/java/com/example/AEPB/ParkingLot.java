@@ -43,7 +43,7 @@ public class ParkingLot {
 
         validCar(car);
 
-        if (parkingSpace.size() >= capacity) {
+        if (!haveCapacity()) {
             throw new ParkingCarException("the parking lot is full");
         }
 

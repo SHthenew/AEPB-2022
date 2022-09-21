@@ -86,4 +86,8 @@ public class ParkingLot {
     private boolean isInvalidTicket(Ticket ticket) {
         return Objects.isNull(ticket);
     }
+
+    public boolean ticketInTheLot(Ticket ticket) {
+        return parkingSpace.containsKey(ticket);
+    }
 }

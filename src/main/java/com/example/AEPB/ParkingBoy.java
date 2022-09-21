@@ -22,4 +22,14 @@ public class ParkingBoy {
 
         return parkingLot.parkingCar(car);
     }
+
+    public Car pickUp(Ticket ticket) {
+
+        ParkingLot parkingLot = parkingLots.stream()
+                .filter(lot -> lot.ticketInTheLot(ticket))
+                .findFirst()
+                .orElseThrow(() -> new PickUpException(""));
+
+        return parkingLot.pickUpCar(ticket);
+    }
 }

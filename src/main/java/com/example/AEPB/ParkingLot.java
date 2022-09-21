@@ -1,6 +1,7 @@
 package com.example.AEPB;
 
 
+import lombok.Getter;
 import org.apache.logging.log4j.util.Strings;
 
 import java.util.HashMap;
@@ -12,10 +13,15 @@ public class ParkingLot {
 
     private final Map<Ticket, Car> parkingSpace = new HashMap<>();
     private final int capacity;
+    @Getter
+    private int order;
+    @Getter
+    private String name;
 
-
-    public ParkingLot(int capacity) {
+    public ParkingLot(int capacity, int order, String name) {
         this.capacity = capacity;
+        this.order = order;
+        this.name = name;
     }
 
     private void validCar(Car car) {
@@ -41,10 +47,15 @@ public class ParkingLot {
             throw new ParkingCarException("the parking lot is full");
         }
 
-        Ticket ticket = new Ticket();
+        Ticket ticket = new Ticket(getName());
         parkingSpace.put(ticket, car);
 
         return ticket;
+    }
+
+    public boolean haveCapacity() {
+        return parkingSpace.size() < capacity;
+
     }
 
     private void checkDuplicateCar(Car car) {

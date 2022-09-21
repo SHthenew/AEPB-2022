@@ -22,4 +22,8 @@ public class ParkingBoy {
 
         return parkingLot.parkingCar(car);
     }
+
+    public Car pickUp(Ticket ticket) {
+        return null;
+    }
 }

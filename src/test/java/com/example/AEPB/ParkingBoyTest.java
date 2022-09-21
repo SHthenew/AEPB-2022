@@ -62,6 +62,19 @@ public class ParkingBoyTest {
         assertEquals("all parking lots is full", thrown.getMessage());
     }
 
+    @Test
+    void should_get_car_when_pick_up_given_parked_ticket() {
+        // given
+        Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
+        Ticket ticket = parkingBoy.parkingCar(car);
+
+        // when
+        Car returnedCar = parkingBoy.pickUp(ticket);
+
+        // then
+        assertEquals(car, returnedCar);
+    }
+
     private void fillLot(ParkingLot parkingLot) {
         IntStream.range(0, parkingLot.getMaxCapacity())
                 .forEach(i -> parkingLot.parkingCar(Car.builder().plateNo(UUID.randomUUID().toString()).build()));

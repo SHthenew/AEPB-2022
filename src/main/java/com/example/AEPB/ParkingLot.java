@@ -20,15 +20,15 @@ public class ParkingLot {
 
     private void validCar(Car car) {
         if (Objects.isNull(car)) {
-            throw new RuntimeException("the car can not be null");
+            throw new ParkingCarException("the car can not be null");
         }
 
         if (Objects.isNull(car.getPlateNo())) {
-            throw new RuntimeException("the car plate number can not be null");
+            throw new ParkingCarException("the car plate number can not be null");
         }
 
         if (Strings.isBlank(car.getPlateNo())) {
-            throw new RuntimeException("the car plate number can not be empty");
+            throw new ParkingCarException("the car plate number can not be empty");
         }
         checkDuplicateCar(car);
     }
@@ -38,7 +38,7 @@ public class ParkingLot {
         validCar(car);
 
         if (parkingSpace.size() >= capacity) {
-            throw new RuntimeException("the parking lot is full");
+            throw new ParkingCarException("the parking lot is full");
         }
 
         Ticket ticket = new Ticket();
@@ -52,18 +52,18 @@ public class ParkingLot {
                 .filter(entry -> entry.getValue().equals(car))
                 .findAny()
                 .ifPresent(p -> {
-                    throw new RuntimeException("the car plate number is duplicate");
+                    throw new ParkingCarException("the car plate number is duplicate");
                 });
     }
 
     public Car pickUpCar(Ticket ticket) {
         if (isInvalidTicket(ticket)) {
-            throw new RuntimeException("the ticket can not be null");
+            throw new PickUpException("the ticket can not be null");
         }
 
         Car car = parkingSpace.get(ticket);
         if (Objects.isNull(car)) {
-            throw new RuntimeException("the ticket number can not be found");
+            throw new PickUpException("the ticket number can not be found");
         }
 
         parkingSpace.remove(ticket);

@@ -15,12 +15,22 @@ public class ParkingBoy {
     }
 
     public Ticket parkingCar(Car car) {
+
+        if (containCar(car)) {
+            throw new ParkingCarException("have duplicated car in parking lot");
+        }
+
         ParkingLot parkingLot = parkingLots.stream()
                 .filter(ParkingLot::haveCapacity)
                 .findFirst()
                 .orElseThrow(() -> new ParkingCarException("all parking lots is full"));
 
         return parkingLot.parkingCar(car);
+    }
+
+    private boolean containCar(Car car) {
+        return parkingLots.stream()
+                .anyMatch(lot -> lot.containCar(car));
     }
 
     public Car pickUp(Ticket ticket) {

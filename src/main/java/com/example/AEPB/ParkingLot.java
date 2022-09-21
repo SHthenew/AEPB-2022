@@ -37,7 +37,9 @@ public class ParkingLot {
         if (Strings.isBlank(car.getPlateNo())) {
             throw new ParkingCarException("the car plate number can not be empty");
         }
-        checkDuplicateCar(car);
+        if (containCar(car)) {
+            throw new ParkingCarException("the car plate number is duplicate");
+        }
     }
 
     public Ticket parkingCar(Car car) {
@@ -59,13 +61,9 @@ public class ParkingLot {
 
     }
 
-    private void checkDuplicateCar(Car car) {
-        parkingSpace.entrySet().stream()
-                .filter(entry -> entry.getValue().equals(car))
-                .findAny()
-                .ifPresent(p -> {
-                    throw new ParkingCarException("the car plate number is duplicate");
-                });
+    public boolean containCar(Car car) {
+        return parkingSpace.entrySet().stream()
+                .anyMatch(entry -> entry.getValue().equals(car));
     }
 
     public Car pickUpCar(Ticket ticket) {

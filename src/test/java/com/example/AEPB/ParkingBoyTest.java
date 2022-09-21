@@ -79,7 +79,7 @@ public class ParkingBoyTest {
     void should_parking_failed_when_parking_given_1st_remain_1_space_and_2nd_empty_and_duplicated_car() {
         fillLot(parkingLots.get(0), parkingLots.get(0).getMaxCapacity() - 1);
         Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
-        Ticket ticket = parkingBoy.parkingCar(car);
+        parkingBoy.parkingCar(car);
 
         // when
         ParkingCarException thrown = assertThrows(ParkingCarException.class,

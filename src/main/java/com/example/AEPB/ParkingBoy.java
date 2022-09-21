@@ -18,7 +18,7 @@ public class ParkingBoy {
         ParkingLot parkingLot = parkingLots.stream()
                 .filter(ParkingLot::haveCapacity)
                 .findFirst()
-                .orElseThrow(() -> new ParkingCarException(""));
+                .orElseThrow(() -> new ParkingCarException("all parking lots is full"));
 
         return parkingLot.parkingCar(car);
     }

@@ -8,6 +8,7 @@ import java.util.UUID;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ParkingBoyTest {
 
@@ -37,8 +38,7 @@ public class ParkingBoyTest {
     void should_get_ticket_and_park_into_2nd_lot_when_parking_given_3_parking_lot_and_first_full_and_second_have_space_and_normal_car() {
         // given
         ParkingLot firstLot = parkingLots.get(0);
-        IntStream.range(0, firstLot.getMaxCapacity())
-                .forEach(i -> firstLot.parkingCar(Car.builder().plateNo(UUID.randomUUID().toString()).build()));
+        fillLot(firstLot);
         Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
 
         // when
@@ -46,6 +46,25 @@ public class ParkingBoyTest {
 
         // then
         assertEquals(parkingLots.get(1).getName(), ticket.getParkingLotName());
+    }
+
+    @Test
+    void should_parking_failed_when_parking_car_given_parking_lot_is_all_full() {
+        // given
+        parkingLots.forEach(this::fillLot);
+        Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
+
+        //when
+        ParkingCarException thrown = assertThrows(ParkingCarException.class,
+                () -> parkingBoy.parkingCar(car));
+
+        // then
+        assertEquals("all parking lots is full", thrown.getMessage());
+    }
+
+    private void fillLot(ParkingLot parkingLot) {
+        IntStream.range(0, parkingLot.getMaxCapacity())
+                .forEach(i -> parkingLot.parkingCar(Car.builder().plateNo(UUID.randomUUID().toString()).build()));
     }
 
 }

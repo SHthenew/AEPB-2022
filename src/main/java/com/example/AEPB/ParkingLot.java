@@ -15,13 +15,10 @@ public class ParkingLot {
     @Getter
     private final int maxCapacity;
     @Getter
-    private int order;
-    @Getter
     private String name;
 
-    public ParkingLot(int maxCapacity, int order, String name) {
+    public ParkingLot(int maxCapacity, String name) {
         this.maxCapacity = maxCapacity;
-        this.order = order;
         this.name = name;
     }
 

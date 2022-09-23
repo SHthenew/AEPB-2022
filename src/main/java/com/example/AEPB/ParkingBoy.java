@@ -1,17 +1,13 @@
 package com.example.AEPB;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public abstract class ParkingBoy {
     List<ParkingLot> parkingLots;
 
     public ParkingBoy(List<ParkingLot> parkingLots) {
-        this.parkingLots = parkingLots.stream()
-                .sorted(Comparator.comparingInt(ParkingLot::getOrder))
-                .collect(Collectors.toList());
+        this.parkingLots = parkingLots;
     }
 
     protected abstract Optional<ParkingLot> pickParkingLot();

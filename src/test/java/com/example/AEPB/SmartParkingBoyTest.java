@@ -14,9 +14,9 @@ class SmartParkingBoyTest {
 
     @BeforeEach
     void setUp() {
-        ParkingLot parkingLotA = new ParkingLot(100, 1, "A");
-        ParkingLot parkingLotB = new ParkingLot(100, 2, "B");
-        ParkingLot parkingLotC = new ParkingLot(100, 3, "C");
+        ParkingLot parkingLotA = new ParkingLot(100, "A");
+        ParkingLot parkingLotB = new ParkingLot(100, "B");
+        ParkingLot parkingLotC = new ParkingLot(100, "C");
         parkingLots = List.of(parkingLotA, parkingLotB, parkingLotC);
         smartParkingBoy = new SmartParkingBoy(parkingLots);
     }

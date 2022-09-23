@@ -4,11 +4,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ParkingBoy {
+public class GraduateParkingBoy {
 
     private List<ParkingLot> parkingLots;
 
-    public ParkingBoy(List<ParkingLot> parkingLots) {
+    public GraduateParkingBoy(List<ParkingLot> parkingLots) {
         this.parkingLots = parkingLots.stream()
                 .sorted(Comparator.comparingInt(ParkingLot::getOrder))
                 .collect(Collectors.toList());

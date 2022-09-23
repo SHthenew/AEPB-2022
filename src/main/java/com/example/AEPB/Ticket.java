@@ -1,9 +1,6 @@
 package com.example.AEPB;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -11,14 +8,14 @@ import java.util.UUID;
 @Data
 @Builder
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Ticket {
     private final String ticketNo;
+    private final String parkingLotName;
 
-    public Ticket() {
+    public Ticket(String parkingLotName) {
         ticketNo = UUID.randomUUID().toString();
+        this.parkingLotName = parkingLotName;
     }
 
-    public boolean sameTicket(Ticket ticket) {
-        return ticketNo.equals(ticket.getTicketNo());
-    }
 }

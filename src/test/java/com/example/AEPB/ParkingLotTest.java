@@ -8,19 +8,16 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
-class ParkingLotServiceTest {
+class ParkingLotTest {
 
     static private final Integer parkingSize = 100;
-    private ParkingLotService parkingLot;
+    private ParkingLot parkingLot;
 
     @BeforeEach
     void setUp() {
-        parkingLot = new ParkingLotService(parkingSize);
+        parkingLot = new ParkingLot(parkingSize, 0, "name");
     }
 
     @Test
@@ -72,7 +69,7 @@ class ParkingLotServiceTest {
         Car noPlateNumberCar = Car.builder().plateNo(null).build();
 
         // when
-        RuntimeException thrown = assertThrows(RuntimeException.class, () -> parkingLot.parkingCar(noPlateNumberCar));
+        RuntimeException thrown = assertThrows(ParkingCarException.class, () -> parkingLot.parkingCar(noPlateNumberCar));
 
         // then
         assertEquals("the car plate number can not be null", thrown.getMessage());
@@ -85,7 +82,7 @@ class ParkingLotServiceTest {
         Car emptyPlateNumberCar = Car.builder().plateNo(plateNo).build();
 
         // when
-        RuntimeException thrown = assertThrows(RuntimeException.class, () -> parkingLot.parkingCar(emptyPlateNumberCar));
+        RuntimeException thrown = assertThrows(ParkingCarException.class, () -> parkingLot.parkingCar(emptyPlateNumberCar));
 
         // then
         assertEquals("the car plate number can not be empty", thrown.getMessage());
@@ -97,7 +94,7 @@ class ParkingLotServiceTest {
         Car car = null;
 
         // when
-        RuntimeException thrown = assertThrows(RuntimeException.class, () -> parkingLot.parkingCar(car));
+        RuntimeException thrown = assertThrows(ParkingCarException.class, () -> parkingLot.parkingCar(car));
 
         // then
         assertEquals("the car can not be null", thrown.getMessage());
@@ -111,7 +108,7 @@ class ParkingLotServiceTest {
 
         // when
         Car secondCar = Car.builder().plateNo("京A88888").build();
-        RuntimeException thrown = assertThrows(RuntimeException.class, () -> parkingLot.parkingCar(secondCar));
+        RuntimeException thrown = assertThrows(ParkingCarException.class, () -> parkingLot.parkingCar(secondCar));
 
         // then
         assertEquals("the car plate number is duplicate", thrown.getMessage());
@@ -127,7 +124,7 @@ class ParkingLotServiceTest {
         Ticket emptyTicket = Ticket.builder().ticketNo(emptyTicketNo).build();
 
         // when
-        RuntimeException thrown = assertThrows(RuntimeException.class, () -> parkingLot.pickUpCar(emptyTicket));
+        RuntimeException thrown = assertThrows(PickUpException.class, () -> parkingLot.pickUpCar(emptyTicket));
 
         // then
         assertEquals("the ticket number can not be found", thrown.getMessage());
@@ -140,7 +137,7 @@ class ParkingLotServiceTest {
         Ticket ticket = parkingLot.parkingCar(normalCar);
 
         // when
-        RuntimeException thrown = assertThrows(RuntimeException.class, () -> parkingLot.pickUpCar(null));
+        RuntimeException thrown = assertThrows(PickUpException.class, () -> parkingLot.pickUpCar(null));
 
         // then
         assertEquals("the ticket can not be null", thrown.getMessage());

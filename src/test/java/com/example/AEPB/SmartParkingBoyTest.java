@@ -62,6 +62,19 @@ class SmartParkingBoyTest {
         assertEquals(car, parkingLots.get(parkedNumberAndParkingOrder.getParkingOrder()).pickUpCar(ticket));
     }
 
+    @Test
+    void should_get_car_when_pick_up_given_the_ticket_to_smart_boy() {
+        // given
+        Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
+        Ticket ticket = smartParkingBoy.parkingCar(car);
+
+        // when
+        Car returnedCar = smartParkingBoy.pickUp(ticket);
+
+        // then
+        assertEquals(car, returnedCar);
+    }
+
     private void fillLot(ParkingLot parkingLot, int size) {
         IntStream.range(0, size)
                 .forEach(i -> parkingLot.parkingCar(Car.builder().plateNo(UUID.randomUUID().toString()).build()));

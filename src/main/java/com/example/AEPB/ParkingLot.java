@@ -61,6 +61,10 @@ public class ParkingLot {
 
     }
 
+    public int remainCapacity() {
+        return maxCapacity - parkingSpace.size();
+    }
+
     public boolean containCar(Car car) {
         return parkingSpace.entrySet().stream()
                 .anyMatch(entry -> entry.getValue().equals(car));

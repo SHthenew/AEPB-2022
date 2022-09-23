@@ -38,8 +38,10 @@ class SmartParkingBoyTest {
     void should_get_ticket_and_park_into_first_when_parking_given_3_have_same_space_of_parking_lot_and_normal_car() {
         // given
         Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
+
         // when
         Ticket ticket = smartParkingBoy.parkingCar(car);
+
         // then
         assertEquals(car, parkingLots.get(0).pickUpCar(ticket));
     }
@@ -52,13 +54,16 @@ class SmartParkingBoyTest {
             "10, 3, 2, 2"
     })
     void should_get_ticket_when_parking_given_parked_car_number_and_normal_car(
-            @AggregateWith(ParkedNumberAndParkingOrderAggregate.class) ParkedNumberAndParkingOrder parkedNumberAndParkingOrder) {
+            @AggregateWith(ParkedNumberAndParkingOrderAggregate.class)
+            ParkedNumberAndParkingOrder parkedNumberAndParkingOrder) {
         // given
         IntStream.range(0, parkingLots.size())
                 .forEach(i -> fillLot(parkingLots.get(i), parkedNumberAndParkingOrder.getParkedNumbers().get(i)));
         Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
+
         // when
         Ticket ticket = smartParkingBoy.parkingCar(car);
+
         // then
         assertEquals(car, parkingLots.get(parkedNumberAndParkingOrder.getParkingOrder()).pickUpCar(ticket));
     }
@@ -119,7 +124,8 @@ class SmartParkingBoyTest {
 
     private static class ParkedNumberAndParkingOrderAggregate implements ArgumentsAggregator {
         @Override
-        public ParkedNumberAndParkingOrder aggregateArguments(ArgumentsAccessor arguments, ParameterContext context) throws ArgumentsAggregationException {
+        public ParkedNumberAndParkingOrder aggregateArguments(
+                ArgumentsAccessor arguments, ParameterContext context) throws ArgumentsAggregationException {
             List<Integer> parkedNumbers = IntStream.range(0, arguments.size() - 1)
                     .mapToObj(arguments::getInteger)
                     .collect(Collectors.toList());

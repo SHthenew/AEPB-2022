@@ -90,6 +90,18 @@ class SmartParkingBoyTest {
         assertEquals("the ticket is invalid", thrown.getMessage());
     }
 
+    @Test
+    void should_parking_car_failed_when_parking_given_a_car_duplicate_parking() {
+        // given
+        Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
+        smartParkingBoy.parkingCar(car);
+
+        // when
+        ParkingCarException thrown = assertThrows(ParkingCarException.class, () -> smartParkingBoy.parkingCar(car));
+
+        // then
+        assertEquals("have duplicated car in parking lot", thrown.getMessage());
+    }
 
     private void fillLot(ParkingLot parkingLot, int size) {
         IntStream.range(0, size)

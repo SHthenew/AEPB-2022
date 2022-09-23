@@ -14,12 +14,9 @@ public class ParkingLot {
     private final Map<Ticket, Car> parkingSpace = new HashMap<>();
     @Getter
     private final int maxCapacity;
-    @Getter
-    private String name;
 
-    public ParkingLot(int maxCapacity, String name) {
+    public ParkingLot(int maxCapacity) {
         this.maxCapacity = maxCapacity;
-        this.name = name;
     }
 
     private void validCar(Car car) {
@@ -47,7 +44,7 @@ public class ParkingLot {
             throw new ParkingCarException("the parking lot is full");
         }
 
-        Ticket ticket = new Ticket(getName());
+        Ticket ticket = new Ticket();
         parkingSpace.put(ticket, car);
 
         return ticket;

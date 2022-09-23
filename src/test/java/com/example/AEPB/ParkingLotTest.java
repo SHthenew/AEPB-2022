@@ -20,7 +20,7 @@ class ParkingLotTest {
 
     @BeforeEach
     void setUp() {
-        parkingLot = new ParkingLot(parkingSize, "name");
+        parkingLot = new ParkingLot(parkingSize);
     }
 
     @Test

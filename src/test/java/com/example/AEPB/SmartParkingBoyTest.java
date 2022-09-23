@@ -14,9 +14,9 @@ class SmartParkingBoyTest {
 
     @BeforeEach
     void setUp() {
-        ParkingLot parkingLotA = new ParkingLot(100, "A");
-        ParkingLot parkingLotB = new ParkingLot(100, "B");
-        ParkingLot parkingLotC = new ParkingLot(100, "C");
+        ParkingLot parkingLotA = new ParkingLot(100);
+        ParkingLot parkingLotB = new ParkingLot(100);
+        ParkingLot parkingLotC = new ParkingLot(100);
         parkingLots = List.of(parkingLotA, parkingLotB, parkingLotC);
         smartParkingBoy = new SmartParkingBoy(parkingLots);
     }
@@ -28,7 +28,7 @@ class SmartParkingBoyTest {
         // when
         Ticket ticket = smartParkingBoy.parkingCar(car);
         // then
-        assertEquals(parkingLots.get(0).getName(), ticket.getParkingLotName());
+        assertEquals(car, parkingLots.get(0).pickUpCar(ticket));
     }
 
 

@@ -17,9 +17,9 @@ public class GraduateParkingBoyTest {
 
     @BeforeEach
     void setUp() {
-        ParkingLot parkingLotA = new ParkingLot(100, "A");
-        ParkingLot parkingLotB = new ParkingLot(100, "B");
-        ParkingLot parkingLotC = new ParkingLot(100, "C");
+        ParkingLot parkingLotA = new ParkingLot(100);
+        ParkingLot parkingLotB = new ParkingLot(100);
+        ParkingLot parkingLotC = new ParkingLot(100);
         parkingLots = List.of(parkingLotA, parkingLotB, parkingLotC);
         graduateParkingBoy = new GraduateParkingBoy(parkingLots);
     }
@@ -31,7 +31,7 @@ public class GraduateParkingBoyTest {
         // when
         Ticket ticket = graduateParkingBoy.parkingCar(car);
         // then
-        assertEquals(parkingLots.get(0).getName(), ticket.getParkingLotName());
+        assertEquals(car, parkingLots.get(0).pickUpCar(ticket));
     }
 
     @Test
@@ -45,7 +45,7 @@ public class GraduateParkingBoyTest {
         Ticket ticket = graduateParkingBoy.parkingCar(car);
 
         // then
-        assertEquals(parkingLots.get(1).getName(), ticket.getParkingLotName());
+        assertEquals(car, parkingLots.get(1).pickUpCar(ticket));
     }
 
     @Test
@@ -97,12 +97,13 @@ public class GraduateParkingBoyTest {
         fillLot(parkingLots.get(1), parkingLots.get(1).getMaxCapacity() - 1);
 
         graduateParkingBoy.pickUp(ticket);
+        Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
 
         // when
-        Ticket ticket2 = graduateParkingBoy.parkingCar(Car.builder().plateNo(UUID.randomUUID().toString()).build());
+        Ticket ticket2 = graduateParkingBoy.parkingCar(car);
 
         // then
-        assertEquals(parkingLots.get(0).getName(), ticket2.getParkingLotName());
+        assertEquals(car, parkingLots.get(0).pickUpCar(ticket2));
     }
 
     private void fillLot(ParkingLot parkingLot, int size) {

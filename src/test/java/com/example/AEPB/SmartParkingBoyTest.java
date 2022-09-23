@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SmartParkingBoyTest {
     private List<ParkingLot> parkingLots;
@@ -74,6 +75,21 @@ class SmartParkingBoyTest {
         // then
         assertEquals(car, returnedCar);
     }
+
+    @Test
+    void should_get_car_failed_when_pick_up_given_a_used_ticket_to_smart_boy() {
+        // given
+        Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
+        Ticket ticket = smartParkingBoy.parkingCar(car);
+        smartParkingBoy.pickUp(ticket);
+
+        // when
+        PickUpException thrown = assertThrows(PickUpException.class, () -> smartParkingBoy.pickUp(ticket));
+
+        // then
+        assertEquals("the ticket is invalid", thrown.getMessage());
+    }
+
 
     private void fillLot(ParkingLot parkingLot, int size) {
         IntStream.range(0, size)

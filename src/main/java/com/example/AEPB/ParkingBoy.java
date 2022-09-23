@@ -29,7 +29,7 @@ public abstract class ParkingBoy {
         ParkingLot parkingLot = parkingLots.stream()
                 .filter(lot -> lot.ticketInTheLot(ticket))
                 .findFirst()
-                .orElseThrow(() -> new PickUpException(""));
+                .orElseThrow(() -> new PickUpException("the ticket is invalid"));
 
         return parkingLot.pickUpCar(ticket);
     }

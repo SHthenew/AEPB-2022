@@ -2,9 +2,12 @@ package com.example.AEPB;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -31,5 +34,29 @@ class SmartParkingBoyTest {
         assertEquals(car, parkingLots.get(0).pickUpCar(ticket));
     }
 
+    @ParameterizedTest
+    @CsvSource({
+            "0, 0, 0, 0",
+            "10, 2, 3, 1",
+            "10, 2, 2, 1",
+            "10, 3, 2, 2"
+    })
+    void should_get_ticket_when_parking_given_parked_car_number_and_normal_car(
+            int lotANumber, int lotBNumber, int lotCNumber, int parkedOrder) {
+        // given
+        fillLot(parkingLots.get(0), lotANumber);
+        fillLot(parkingLots.get(1), lotBNumber);
+        fillLot(parkingLots.get(2), lotCNumber);
+        Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
+        // when
+        Ticket ticket = smartParkingBoy.parkingCar(car);
+        // then
+        assertEquals(car, parkingLots.get(parkedOrder).pickUpCar(ticket));
+    }
+
+    private void fillLot(ParkingLot parkingLot, int size) {
+        IntStream.range(0, size)
+                .forEach(i -> parkingLot.parkingCar(Car.builder().plateNo(UUID.randomUUID().toString()).build()));
+    }
 
 }

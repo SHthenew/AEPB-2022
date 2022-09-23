@@ -2,6 +2,7 @@ package com.example.AEPB;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public abstract class ParkingBoy {
@@ -13,7 +14,7 @@ public abstract class ParkingBoy {
                 .collect(Collectors.toList());
     }
 
-    protected abstract ParkingLot pickParkingLot();
+    protected abstract Optional<ParkingLot> pickParkingLot();
 
     public Ticket parkingCar(Car car) {
 
@@ -21,7 +22,8 @@ public abstract class ParkingBoy {
             throw new ParkingCarException("have duplicated car in parking lot");
         }
 
-        ParkingLot parkingLot = pickParkingLot();
+        ParkingLot parkingLot = pickParkingLot()
+                .orElseThrow(() -> new ParkingCarException("all parking lots is full"));
 
         return parkingLot.parkingCar(car);
     }

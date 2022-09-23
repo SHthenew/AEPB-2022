@@ -1,6 +1,7 @@
 package com.example.AEPB;
 
 import java.util.List;
+import java.util.Optional;
 
 public class GraduateParkingBoy extends ParkingBoy {
 
@@ -9,10 +10,9 @@ public class GraduateParkingBoy extends ParkingBoy {
     }
 
     @Override
-    protected ParkingLot pickParkingLot() {
+    protected Optional<ParkingLot> pickParkingLot() {
         return parkingLots.stream()
                 .filter(ParkingLot::haveCapacity)
-                .findFirst()
-                .orElseThrow(() -> new ParkingCarException("all parking lots is full"));
+                .findFirst();
     }
 }

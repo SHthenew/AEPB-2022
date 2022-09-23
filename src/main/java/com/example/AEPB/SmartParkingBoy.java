@@ -2,6 +2,7 @@ package com.example.AEPB;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 public class SmartParkingBoy extends ParkingBoy {
     public SmartParkingBoy(List<ParkingLot> parkingLots) {
@@ -9,11 +10,10 @@ public class SmartParkingBoy extends ParkingBoy {
     }
 
     @Override
-    protected ParkingLot pickParkingLot() {
+    protected Optional<ParkingLot> pickParkingLot() {
         return parkingLots.stream()
                 .filter(ParkingLot::haveCapacity)
-                .max(Comparator.comparingInt(ParkingLot::remainCapacity))
-                .orElseThrow(() -> new ParkingCarException("all parking lots is full"));
+                .max(Comparator.comparingInt(ParkingLot::remainCapacity));
     }
 
 }

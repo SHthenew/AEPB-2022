@@ -10,18 +10,18 @@ import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ParkingBoyTest {
+public class GraduateParkingBoyTest {
 
     private List<ParkingLot> parkingLots;
-    private ParkingBoy parkingBoy;
+    private GraduateParkingBoy graduateParkingBoy;
 
     @BeforeEach
     void setUp() {
-        ParkingLot parkingLotA = new ParkingLot(100, 1, "A");
-        ParkingLot parkingLotB = new ParkingLot(100, 2, "B");
-        ParkingLot parkingLotC = new ParkingLot(100, 3, "C");
+        ParkingLot parkingLotA = new ParkingLot(100);
+        ParkingLot parkingLotB = new ParkingLot(100);
+        ParkingLot parkingLotC = new ParkingLot(100);
         parkingLots = List.of(parkingLotA, parkingLotB, parkingLotC);
-        parkingBoy = new ParkingBoy(parkingLots);
+        graduateParkingBoy = new GraduateParkingBoy(parkingLots);
     }
 
     @Test
@@ -29,9 +29,9 @@ public class ParkingBoyTest {
         // given
         Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
         // when
-        Ticket ticket = parkingBoy.parkingCar(car);
+        Ticket ticket = graduateParkingBoy.parkingCar(car);
         // then
-        assertEquals(parkingLots.get(0).getName(), ticket.getParkingLotName());
+        assertEquals(car, parkingLots.get(0).pickUpCar(ticket));
     }
 
     @Test
@@ -42,10 +42,10 @@ public class ParkingBoyTest {
         Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
 
         // when
-        Ticket ticket = parkingBoy.parkingCar(car);
+        Ticket ticket = graduateParkingBoy.parkingCar(car);
 
         // then
-        assertEquals(parkingLots.get(1).getName(), ticket.getParkingLotName());
+        assertEquals(car, parkingLots.get(1).pickUpCar(ticket));
     }
 
     @Test
@@ -56,7 +56,7 @@ public class ParkingBoyTest {
 
         //when
         ParkingCarException thrown = assertThrows(ParkingCarException.class,
-                () -> parkingBoy.parkingCar(car));
+                () -> graduateParkingBoy.parkingCar(car));
 
         // then
         assertEquals("all parking lots is full", thrown.getMessage());
@@ -66,10 +66,10 @@ public class ParkingBoyTest {
     void should_get_car_when_pick_up_given_parked_ticket() {
         // given
         Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
-        Ticket ticket = parkingBoy.parkingCar(car);
+        Ticket ticket = graduateParkingBoy.parkingCar(car);
 
         // when
-        Car returnedCar = parkingBoy.pickUp(ticket);
+        Car returnedCar = graduateParkingBoy.pickUp(ticket);
 
         // then
         assertEquals(car, returnedCar);
@@ -79,11 +79,11 @@ public class ParkingBoyTest {
     void should_parking_failed_when_parking_given_1st_remain_1_space_and_2nd_empty_and_duplicated_car() {
         fillLot(parkingLots.get(0), parkingLots.get(0).getMaxCapacity() - 1);
         Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
-        parkingBoy.parkingCar(car);
+        graduateParkingBoy.parkingCar(car);
 
         // when
         ParkingCarException thrown = assertThrows(ParkingCarException.class,
-                () -> parkingBoy.parkingCar(car));
+                () -> graduateParkingBoy.parkingCar(car));
 
         // then
         assertEquals("have duplicated car in parking lot", thrown.getMessage());
@@ -96,13 +96,14 @@ public class ParkingBoyTest {
         Ticket ticket = parkingLots.get(0).parkingCar(Car.builder().plateNo(UUID.randomUUID().toString()).build());
         fillLot(parkingLots.get(1), parkingLots.get(1).getMaxCapacity() - 1);
 
-        parkingBoy.pickUp(ticket);
+        graduateParkingBoy.pickUp(ticket);
+        Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
 
         // when
-        Ticket ticket2 = parkingBoy.parkingCar(Car.builder().plateNo(UUID.randomUUID().toString()).build());
+        Ticket ticket2 = graduateParkingBoy.parkingCar(car);
 
         // then
-        assertEquals(parkingLots.get(0).getName(), ticket2.getParkingLotName());
+        assertEquals(car, parkingLots.get(0).pickUpCar(ticket2));
     }
 
     private void fillLot(ParkingLot parkingLot, int size) {

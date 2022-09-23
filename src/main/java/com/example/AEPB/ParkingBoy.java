@@ -1,18 +1,16 @@
 package com.example.AEPB;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
-public class ParkingBoy {
-
-    private List<ParkingLot> parkingLots;
+public abstract class ParkingBoy {
+    List<ParkingLot> parkingLots;
 
     public ParkingBoy(List<ParkingLot> parkingLots) {
-        this.parkingLots = parkingLots.stream()
-                .sorted(Comparator.comparingInt(ParkingLot::getOrder))
-                .collect(Collectors.toList());
+        this.parkingLots = parkingLots;
     }
+
+    protected abstract Optional<ParkingLot> pickParkingLot();
 
     public Ticket parkingCar(Car car) {
 
@@ -20,17 +18,10 @@ public class ParkingBoy {
             throw new ParkingCarException("have duplicated car in parking lot");
         }
 
-        ParkingLot parkingLot = parkingLots.stream()
-                .filter(ParkingLot::haveCapacity)
-                .findFirst()
+        ParkingLot parkingLot = pickParkingLot()
                 .orElseThrow(() -> new ParkingCarException("all parking lots is full"));
 
         return parkingLot.parkingCar(car);
-    }
-
-    private boolean containCar(Car car) {
-        return parkingLots.stream()
-                .anyMatch(lot -> lot.containCar(car));
     }
 
     public Car pickUp(Ticket ticket) {
@@ -38,8 +29,15 @@ public class ParkingBoy {
         ParkingLot parkingLot = parkingLots.stream()
                 .filter(lot -> lot.ticketInTheLot(ticket))
                 .findFirst()
-                .orElseThrow(() -> new PickUpException(""));
+                .orElseThrow(() -> new PickUpException("the ticket is invalid"));
 
         return parkingLot.pickUpCar(ticket);
     }
+
+    private boolean containCar(Car car) {
+        return parkingLots.stream()
+                .anyMatch(lot -> lot.containCar(car));
+    }
+
+
 }

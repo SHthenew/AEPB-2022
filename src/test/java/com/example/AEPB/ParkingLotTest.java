@@ -8,7 +8,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ParkingLotTest {
 
@@ -17,7 +20,7 @@ class ParkingLotTest {
 
     @BeforeEach
     void setUp() {
-        parkingLot = new ParkingLot(parkingSize, 0, "name");
+        parkingLot = new ParkingLot(parkingSize);
     }
 
     @Test

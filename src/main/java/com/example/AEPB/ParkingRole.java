@@ -3,10 +3,10 @@ package com.example.AEPB;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class ParkingBoy {
+public abstract class ParkingRole {
     List<ParkingLot> parkingLots;
 
-    public ParkingBoy(List<ParkingLot> parkingLots) {
+    public ParkingRole(List<ParkingLot> parkingLots) {
         this.parkingLots = parkingLots;
     }
 

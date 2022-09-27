@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public class ParkingRobot extends ParkingBoy {
+public class ParkingRobot extends ParkingRole {
 
     public ParkingRobot(List<ParkingLot> parkingLots) {
         super(parkingLots);

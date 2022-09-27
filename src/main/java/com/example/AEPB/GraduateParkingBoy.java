@@ -36,7 +36,7 @@ public class GraduateParkingBoy implements ParkingCar, PickUpCar {
         return parkingLot.pickUpCar(ticket);
     }
 
-    Optional<ParkingLot> pickParkingLot() {
+    private Optional<ParkingLot> pickParkingLot() {
         return parkingLots.stream()
                 .filter(ParkingLot::haveCapacity)
                 .findFirst();

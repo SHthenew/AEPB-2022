@@ -14,6 +14,6 @@ public class ParkingRobot extends ParkingBoy {
     protected Optional<ParkingLot> pickParkingLot() {
         return parkingLots.stream()
                 .filter(ParkingLot::haveCapacity)
-                .max(Comparator.comparing(ParkingLot::emptyRatio));
+                .max(Comparator.comparingDouble(ParkingLot::emptyRatio));
     }
 }

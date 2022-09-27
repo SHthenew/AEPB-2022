@@ -16,4 +16,9 @@ public class ParkingRobot extends ParkingBoy {
                 .filter(ParkingLot::haveCapacity)
                 .max(Comparator.comparingDouble(ParkingLot::emptyRatio));
     }
+
+    @Override
+    public Car pickUp(Ticket ticket) {
+        throw new PickUpException("robot can not pick up");
+    }
 }

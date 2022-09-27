@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ParkingRobotTest {
 
@@ -55,7 +56,7 @@ public class ParkingRobotTest {
             "0.2, 0.3, 0.05, 1",
             "1, 0.2, 0.2, 0"
     })
-    void should_get_ticket_when_parking_given_parked_car_number_and_normal_car(
+    void should_get_ticket_when_parking_given_empty_ratio_and_normal_car(
             @AggregateWith(ParkedNumberAndParkingOrderAggregate.class)
             EmptyRatioAndParkingOrder emptyRatioAndParkingOrder) {
         // given
@@ -69,6 +70,19 @@ public class ParkingRobotTest {
 
         // then
         assertEquals(car, parkingLots.get(emptyRatioAndParkingOrder.getParkingOrder()).pickUpCar(ticket));
+    }
+
+    @Test
+    void should_pick_up_failed_when_pick_given_a_car_in_parking_lot_and_robot() {
+        // given
+        Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
+        Ticket ticket = parkingRobot.parkingCar(car);
+
+        // when
+        PickUpException thrown = assertThrows(PickUpException.class, () -> parkingRobot.pickUp(ticket));
+
+        // then
+        assertEquals("robot can not pick up", thrown.getMessage());
     }
 
     private void fillLotToEmptyRatio(ParkingLot parkingLot, Double emptyRatio) {

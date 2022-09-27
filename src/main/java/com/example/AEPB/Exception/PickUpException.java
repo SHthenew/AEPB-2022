@@ -1,6 +1,4 @@
-package com.example.AEPB.PickUpCar;
-
-import com.example.AEPB.ParkException;
+package com.example.AEPB.Exception;
 
 public class PickUpException extends ParkException {
     public PickUpException(String message) {

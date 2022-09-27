@@ -1,7 +1,8 @@
 package com.example.AEPB;
 
 
-import com.example.AEPB.PickUpCar.PickUpException;
+import com.example.AEPB.Exception.ParkingCarException;
+import com.example.AEPB.Exception.PickUpException;
 import lombok.Getter;
 import org.apache.logging.log4j.util.Strings;
 

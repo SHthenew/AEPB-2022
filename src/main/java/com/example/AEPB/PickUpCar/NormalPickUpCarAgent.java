@@ -1,6 +1,7 @@
 package com.example.AEPB.PickUpCar;
 
 import com.example.AEPB.Car;
+import com.example.AEPB.Exception.PickUpException;
 import com.example.AEPB.ParkingLot;
 import com.example.AEPB.Ticket;
 

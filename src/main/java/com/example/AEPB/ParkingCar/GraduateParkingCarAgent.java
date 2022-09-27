@@ -1,7 +1,7 @@
 package com.example.AEPB.ParkingCar;
 
 import com.example.AEPB.Car;
-import com.example.AEPB.ParkingCarException;
+import com.example.AEPB.Exception.ParkingCarException;
 import com.example.AEPB.ParkingLot;
 import com.example.AEPB.Ticket;
 import lombok.NoArgsConstructor;

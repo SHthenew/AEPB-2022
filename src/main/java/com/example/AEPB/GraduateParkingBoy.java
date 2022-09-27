@@ -8,7 +8,7 @@ public class GraduateParkingBoy implements ParkingCar, PickUpCar {
     // parking agent (agent1-> normal agent2 -> smart)
     // pick up agent (agent1 -> normal agent2 -> smart)
 
-    private List<ParkingLot> parkingLots;
+    private final List<ParkingLot> parkingLots;
 
     public GraduateParkingBoy(List<ParkingLot> parkingLots) {
         this.parkingLots = parkingLots;

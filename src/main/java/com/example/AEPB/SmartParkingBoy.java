@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class SmartParkingBoy implements ParkingCar, PickUpCar {
-    private List<ParkingLot> parkingLots;
+    private final List<ParkingLot> parkingLots;
 
     public SmartParkingBoy(List<ParkingLot> parkingLots) {
         this.parkingLots = parkingLots;

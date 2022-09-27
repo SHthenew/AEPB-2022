@@ -4,6 +4,7 @@ package com.example.AEPB;
 import lombok.Getter;
 import org.apache.logging.log4j.util.Strings;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -57,6 +58,10 @@ public class ParkingLot {
 
     public int remainCapacity() {
         return maxCapacity - parkingSpace.size();
+    }
+
+    public BigDecimal emptyRatio() {
+        return BigDecimal.valueOf(1 - parkingSpace.size() / maxCapacity);
     }
 
     public boolean containCar(Car car) {

@@ -99,6 +99,20 @@ public class ParkingRobotTest {
         assertEquals("all parking lots is full", thrown.getMessage());
     }
 
+    @Test
+    void should_parking_failed_when_parking_given_the_car_having_same_plate_number_in_plot() {
+        // given
+        Car firstCar = Car.builder().plateNo("京A88888").build();
+        parkingRobot.parkingCar(firstCar);
+
+        // when
+        Car secondCar = Car.builder().plateNo("京A88888").build();
+        RuntimeException thrown = assertThrows(ParkingCarException.class, () -> parkingRobot.parkingCar(secondCar));
+
+        // then
+        assertEquals("have duplicated car in parking lot", thrown.getMessage());
+    }
+
     private void fillLotToEmptyRatio(ParkingLot parkingLot, Double emptyRatio) {
         int parkingSize = (int) Math.floor((1 - emptyRatio) * parkingLot.getMaxCapacity());
 

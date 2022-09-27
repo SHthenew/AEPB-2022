@@ -58,7 +58,7 @@ class SmartParkingBoyTest {
             ParkedNumberAndParkingOrder parkedNumberAndParkingOrder) {
         // given
         IntStream.range(0, parkingLots.size())
-                .forEach(i -> fillLot(parkingLots.get(i), parkedNumberAndParkingOrder.getParkedNumbers().get(i)));
+                .forEach(i -> FillLotUtils.fillLot(parkingLots.get(i), parkedNumberAndParkingOrder.getParkedNumbers().get(i)));
         Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
 
         // when
@@ -106,11 +106,6 @@ class SmartParkingBoyTest {
 
         // then
         assertEquals("have duplicated car in parking lot", thrown.getMessage());
-    }
-
-    private void fillLot(ParkingLot parkingLot, int size) {
-        IntStream.range(0, size)
-                .forEach(i -> parkingLot.parkingCar(Car.builder().plateNo(UUID.randomUUID().toString()).build()));
     }
 
     @Getter

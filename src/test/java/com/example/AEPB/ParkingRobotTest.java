@@ -62,7 +62,7 @@ public class ParkingRobotTest {
         // given
         IntStream.range(0, parkingLots.size())
                 .forEach(i ->
-                        fillLotToEmptyRatio(parkingLots.get(i), emptyRatioAndParkingOrder.getEmptyRatio().get(i)));
+                        FillLotUtils.fillLotToEmptyRatio(parkingLots.get(i), emptyRatioAndParkingOrder.getEmptyRatio().get(i)));
         Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
 
         // when
@@ -88,7 +88,7 @@ public class ParkingRobotTest {
     @Test
     void should_parking_failed_when_parking_car_given_parking_lot_is_all_full() {
         // given
-        parkingLots.forEach(lot -> fillLotToEmptyRatio(lot, 0.0));
+        parkingLots.forEach(lot -> FillLotUtils.fillLotToEmptyRatio(lot, 0.0));
         Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
 
         //when
@@ -111,13 +111,6 @@ public class ParkingRobotTest {
 
         // then
         assertEquals("have duplicated car in parking lot", thrown.getMessage());
-    }
-
-    private void fillLotToEmptyRatio(ParkingLot parkingLot, Double emptyRatio) {
-        int parkingSize = (int) Math.floor((1 - emptyRatio) * parkingLot.getMaxCapacity());
-
-        IntStream.range(0, parkingSize)
-                .forEach(i -> parkingLot.parkingCar(Car.builder().plateNo(UUID.randomUUID().toString()).build()));
     }
 
     @Getter

@@ -85,6 +85,20 @@ public class ParkingRobotTest {
         assertEquals("robot can not pick up", thrown.getMessage());
     }
 
+    @Test
+    void should_parking_failed_when_parking_car_given_parking_lot_is_all_full() {
+        // given
+        parkingLots.forEach(lot -> fillLotToEmptyRatio(lot, 0.0));
+        Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
+
+        //when
+        ParkingCarException thrown = assertThrows(ParkingCarException.class,
+                () -> parkingRobot.parkingCar(car));
+
+        // then
+        assertEquals("all parking lots is full", thrown.getMessage());
+    }
+
     private void fillLotToEmptyRatio(ParkingLot parkingLot, Double emptyRatio) {
         int parkingSize = (int) Math.floor((1 - emptyRatio) * parkingLot.getMaxCapacity());
 

@@ -6,7 +6,7 @@ import com.example.AEPB.Ticket;
 
 import java.util.List;
 
-public class NormalPickUpCar implements PickUpCarAgent {
+public class NormalPickUpCarAgent implements PickUpCarAgent {
 
     @Override
     public Car pickUp(Ticket ticket, List<ParkingLot> parkingLots) {

@@ -3,7 +3,7 @@ package com.example.AEPB;
 import com.example.AEPB.ParkingCar.GraduateParkingCarAgent;
 import com.example.AEPB.ParkingCar.ParkingCar;
 import com.example.AEPB.ParkingCar.ParkingCarAgent;
-import com.example.AEPB.PickUpCar.NormalPickUpCar;
+import com.example.AEPB.PickUpCar.NormalPickUpCarAgent;
 import com.example.AEPB.PickUpCar.PickUpCar;
 import com.example.AEPB.PickUpCar.PickUpCarAgent;
 
@@ -18,7 +18,7 @@ public class GraduateParkingBoy implements ParkingCar, PickUpCar {
     public GraduateParkingBoy(List<ParkingLot> parkingLots) {
         this.parkingLots = parkingLots;
         this.parkingCarAgent = new GraduateParkingCarAgent();
-        this.pickUpCarAgent = new NormalPickUpCar();
+        this.pickUpCarAgent = new NormalPickUpCarAgent();
     }
 
     @Override

@@ -11,8 +11,6 @@ import java.util.Optional;
 
 @NoArgsConstructor
 public class GraduateParkingCarAgent implements ParkingCarAgent {
-
-
     @Override
     public Ticket parkingCar(Car car, List<ParkingLot> lots) {
         if (containCar(lots, car)) {

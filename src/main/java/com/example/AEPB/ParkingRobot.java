@@ -3,12 +3,11 @@ package com.example.AEPB;
 import com.example.AEPB.ParkingCar.ParkingCar;
 import com.example.AEPB.ParkingCar.ParkingCarAgent;
 import com.example.AEPB.ParkingCar.RobotParkingCarAgent;
-import com.example.AEPB.PickUpCar.PickUpCar;
 import com.example.AEPB.PickUpCar.PickUpException;
 
 import java.util.List;
 
-public class ParkingRobot implements ParkingCar, PickUpCar {
+public class ParkingRobot implements ParkingCar {
 
     private final List<ParkingLot> parkingLots;
 
@@ -24,7 +23,6 @@ public class ParkingRobot implements ParkingCar, PickUpCar {
         return parkingCarAgent.parkingCar(car, parkingLots);
     }
 
-    @Override
     public Car pickUp(Ticket ticket) {
         throw new PickUpException("robot can not pick up");
     }

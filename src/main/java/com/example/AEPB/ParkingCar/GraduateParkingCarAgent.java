@@ -1,10 +1,18 @@
-package com.example.AEPB;
+package com.example.AEPB.ParkingCar;
 
-import java.util.Comparator;
+import com.example.AEPB.Car;
+import com.example.AEPB.ParkingCarException;
+import com.example.AEPB.ParkingLot;
+import com.example.AEPB.Ticket;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 import java.util.Optional;
 
-public class RobotParkingCarAgent implements ParkingCarAgent {
+@NoArgsConstructor
+public class GraduateParkingCarAgent implements ParkingCarAgent {
+
+
     @Override
     public Ticket parkingCar(Car car, List<ParkingLot> lots) {
         if (containCar(lots, car)) {
@@ -20,7 +28,7 @@ public class RobotParkingCarAgent implements ParkingCarAgent {
     private Optional<ParkingLot> pickParkingLot(List<ParkingLot> parkingLots) {
         return parkingLots.stream()
                 .filter(ParkingLot::haveCapacity)
-                .max(Comparator.comparingDouble(ParkingLot::emptyRatio));
+                .findFirst();
     }
 
     private boolean containCar(List<ParkingLot> parkingLots, Car car) {

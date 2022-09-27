@@ -1,5 +1,6 @@
 package com.example.AEPB;
 
+import com.example.AEPB.PickUpCar.PickUpException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

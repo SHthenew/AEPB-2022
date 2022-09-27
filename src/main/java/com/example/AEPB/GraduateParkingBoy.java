@@ -1,18 +1,33 @@
 package com.example.AEPB;
 
-import java.util.List;
-import java.util.Optional;
+import com.example.AEPB.ParkingCar.GraduateParkingCarAgent;
+import com.example.AEPB.ParkingCar.ParkingCar;
+import com.example.AEPB.ParkingCar.ParkingCarAgent;
+import com.example.AEPB.PickUpCar.NormalPickUpCarAgent;
+import com.example.AEPB.PickUpCar.PickUpCar;
+import com.example.AEPB.PickUpCar.PickUpCarAgent;
 
-public class GraduateParkingBoy extends ParkingBoy {
+import java.util.List;
+
+public class GraduateParkingBoy implements ParkingCar, PickUpCar {
+
+    private final List<ParkingLot> parkingLots;
+    private final ParkingCarAgent parkingCarAgent;
+    private final PickUpCarAgent pickUpCarAgent;
 
     public GraduateParkingBoy(List<ParkingLot> parkingLots) {
-        super(parkingLots);
+        this.parkingLots = parkingLots;
+        this.parkingCarAgent = new GraduateParkingCarAgent();
+        this.pickUpCarAgent = new NormalPickUpCarAgent();
     }
 
     @Override
-    protected Optional<ParkingLot> pickParkingLot() {
-        return parkingLots.stream()
-                .filter(ParkingLot::haveCapacity)
-                .findFirst();
+    public Ticket parkingCar(Car car) {
+        return parkingCarAgent.parkingCar(car, parkingLots);
+    }
+
+    @Override
+    public Car pickUp(Ticket ticket) {
+        return pickUpCarAgent.pickUp(ticket, parkingLots);
     }
 }

@@ -2,24 +2,18 @@ package com.example.AEPB;
 
 import com.example.AEPB.ParkingCar.ParkingCar;
 import com.example.AEPB.ParkingCar.ParkingCarAgent;
-import com.example.AEPB.ParkingCar.SmartParkingCarAgent;
-import com.example.AEPB.PickUpCar.NormalPickUpCarAgent;
 import com.example.AEPB.PickUpCar.PickUpCar;
 import com.example.AEPB.PickUpCar.PickUpCarAgent;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-public class SmartParkingBoy implements ParkingCar, PickUpCar {
-    private final List<ParkingLot> parkingLots;
+@RequiredArgsConstructor
+public class DynamicParking implements ParkingCar, PickUpCar {
 
+    private final List<ParkingLot> parkingLots;
     private final ParkingCarAgent parkingCarAgent;
     private final PickUpCarAgent pickUpCarAgent;
-
-    public SmartParkingBoy(List<ParkingLot> parkingLots) {
-        this.parkingLots = parkingLots;
-        this.parkingCarAgent = new SmartParkingCarAgent();
-        this.pickUpCarAgent = new NormalPickUpCarAgent();
-    }
 
     @Override
     public Ticket parkingCar(Car car) {

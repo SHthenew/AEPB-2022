@@ -22,9 +22,11 @@ import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class SmartParkingBoyTest {
+public class ParkingRobotTest {
+
     private List<ParkingLot> parkingLots;
-    private SmartParkingBoy smartParkingBoy;
+
+    private ParkingRobot parkingRobot;
 
     @BeforeEach
     void setUp() {
@@ -32,78 +34,81 @@ class SmartParkingBoyTest {
         ParkingLot parkingLotB = new ParkingLot(100);
         ParkingLot parkingLotC = new ParkingLot(100);
         parkingLots = List.of(parkingLotA, parkingLotB, parkingLotC);
-        smartParkingBoy = new SmartParkingBoy(parkingLots);
+        parkingRobot = new ParkingRobot(parkingLots);
     }
 
     @Test
-    void should_get_ticket_and_park_into_first_when_parking_given_3_have_same_space_of_parking_lot_and_normal_car() {
+    void should_get_ticket_and_parking_into_first_space_when_parking_given_3_empty_parking_lots_and_a_robot() {
         // given
         Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
 
         // when
-        Ticket ticket = smartParkingBoy.parkingCar(car);
+        Ticket ticket = parkingRobot.parkingCar(car);
 
         // then
         assertEquals(car, parkingLots.get(0).pickUpCar(ticket));
+
     }
 
     @ParameterizedTest
     @CsvSource({
-            "0, 0, 0, 0",
-            "10, 2, 3, 1",
-            "10, 2, 2, 1",
-            "10, 3, 2, 2"
+            "1, 1, 1, 0",
+            "0.1, 0.2, 0.3, 2",
+            "0.2, 0.3, 0.05, 1",
+            "1, 0.2, 0.2, 0"
     })
-    void should_get_ticket_when_parking_given_parked_car_number_and_normal_car(
+    void should_get_ticket_when_parking_given_empty_ratio_and_normal_car(
             @AggregateWith(ParkedNumberAndParkingOrderAggregate.class)
-            ParkedNumberAndParkingOrder parkedNumberAndParkingOrder) {
+            EmptyRatioAndParkingOrder emptyRatioAndParkingOrder) {
         // given
         IntStream.range(0, parkingLots.size())
-                .forEach(i -> FillLotUtils.fillLot(parkingLots.get(i), parkedNumberAndParkingOrder.getParkedNumbers().get(i)));
+                .forEach(i ->
+                        FillLotUtils.fillLotToEmptyRatio(parkingLots.get(i), emptyRatioAndParkingOrder.getEmptyRatio().get(i)));
         Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
 
         // when
-        Ticket ticket = smartParkingBoy.parkingCar(car);
+        Ticket ticket = parkingRobot.parkingCar(car);
 
         // then
-        assertEquals(car, parkingLots.get(parkedNumberAndParkingOrder.getParkingOrder()).pickUpCar(ticket));
+        assertEquals(car, parkingLots.get(emptyRatioAndParkingOrder.getParkingOrder()).pickUpCar(ticket));
     }
 
     @Test
-    void should_get_car_when_pick_up_given_the_ticket_to_smart_boy() {
+    void should_pick_up_failed_when_pick_given_a_car_in_parking_lot_and_robot() {
         // given
         Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
-        Ticket ticket = smartParkingBoy.parkingCar(car);
+        Ticket ticket = parkingRobot.parkingCar(car);
 
         // when
-        Car returnedCar = smartParkingBoy.pickUp(ticket);
+        PickUpException thrown = assertThrows(PickUpException.class, () -> parkingRobot.pickUp(ticket));
 
         // then
-        assertEquals(car, returnedCar);
+        assertEquals("robot can not pick up", thrown.getMessage());
     }
 
     @Test
-    void should_get_car_failed_when_pick_up_given_a_used_ticket_to_smart_boy() {
+    void should_parking_failed_when_parking_car_given_parking_lot_is_all_full() {
         // given
+        parkingLots.forEach(lot -> FillLotUtils.fillLotToEmptyRatio(lot, 0.0));
         Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
-        Ticket ticket = smartParkingBoy.parkingCar(car);
-        smartParkingBoy.pickUp(ticket);
 
-        // when
-        PickUpException thrown = assertThrows(PickUpException.class, () -> smartParkingBoy.pickUp(ticket));
+        //when
+        ParkingCarException thrown = assertThrows(ParkingCarException.class,
+                () -> parkingRobot.parkingCar(car));
 
         // then
-        assertEquals("the ticket is invalid", thrown.getMessage());
+        assertEquals("all parking lots is full", thrown.getMessage());
     }
 
     @Test
-    void should_parking_car_failed_when_parking_given_a_car_duplicate_parking() {
+    void should_parking_failed_when_parking_given_the_car_having_same_plate_number_in_plot() {
         // given
-        Car car = Car.builder().plateNo(UUID.randomUUID().toString()).build();
-        smartParkingBoy.parkingCar(car);
+        Car firstCar = Car.builder().plateNo("京A88888").build();
+        parkingRobot.parkingCar(firstCar);
 
         // when
-        ParkingCarException thrown = assertThrows(ParkingCarException.class, () -> smartParkingBoy.parkingCar(car));
+        Car secondCar = Car.builder().plateNo("京A88888").build();
+        RuntimeException thrown = assertThrows(ParkingCarException.class, () -> parkingRobot.parkingCar(secondCar));
 
         // then
         assertEquals("have duplicated car in parking lot", thrown.getMessage());
@@ -112,23 +117,21 @@ class SmartParkingBoyTest {
     @Getter
     @Setter
     @AllArgsConstructor
-    private static class ParkedNumberAndParkingOrder {
-        private final List<Integer> parkedNumbers;
+    private static class EmptyRatioAndParkingOrder {
+        private final List<Double> emptyRatio;
         private final Integer parkingOrder;
 
     }
 
     private static class ParkedNumberAndParkingOrderAggregate implements ArgumentsAggregator {
         @Override
-        public ParkedNumberAndParkingOrder aggregateArguments(
+        public EmptyRatioAndParkingOrder aggregateArguments(
                 ArgumentsAccessor arguments, ParameterContext context) throws ArgumentsAggregationException {
-            List<Integer> parkedNumbers = IntStream.range(0, arguments.size() - 1)
-                    .mapToObj(arguments::getInteger)
+            List<Double> emptyRatio = IntStream.range(0, arguments.size() - 1)
+                    .mapToObj(arguments::getDouble)
                     .collect(Collectors.toList());
             Integer parkingOrder = arguments.getInteger(arguments.size() - 1);
-            return new ParkedNumberAndParkingOrder(parkedNumbers, parkingOrder);
+            return new EmptyRatioAndParkingOrder(emptyRatio, parkingOrder);
         }
     }
-
-
 }

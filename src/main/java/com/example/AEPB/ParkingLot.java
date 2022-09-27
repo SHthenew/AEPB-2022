@@ -1,6 +1,7 @@
 package com.example.AEPB;
 
 
+import com.example.AEPB.PickUpCar.PickUpException;
 import lombok.Getter;
 import org.apache.logging.log4j.util.Strings;
 
@@ -57,6 +58,10 @@ public class ParkingLot {
 
     public int remainCapacity() {
         return maxCapacity - parkingSpace.size();
+    }
+
+    public double emptyRatio() {
+        return 1 - (double) parkingSpace.size() / maxCapacity;
     }
 
     public boolean containCar(Car car) {
